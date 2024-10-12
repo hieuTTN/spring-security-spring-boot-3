@@ -1,0 +1,75 @@
+<!DOCTYPE html >
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+</head>
+<body>
+<div id="menu" th:fragment="headerUser">
+    <div class="topheader">
+        <div class="container">
+            <div class="contenttopheader">
+                <div class="div-align-right">
+                    <a href="blog" class="linktopheader"><i class="fa fa-edit"></i> Xem bài viết</a>
+                    <a href="contact" rel="noopener" class="linktopheader"><i class="fa fa-envelope contact-icon"></i> Liên hệ với chúng tôi</a>
+                    <a href="https://www.facebook.com/thinhchull30" class="linktopheader"><i class="fab fa-facebook-messenger"></i> Chat với chúng tôi trên Messenger</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="bottomheader">
+        <div class="container">
+            <nav class="navbar navbar-expand-lg">
+                <div class="container-fluid">
+                    <a href="index" class="navbar-brand"><img class="logoheader" src="image/logonew.jpg" alt=""></a>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <a href="cart">
+                        <i style="border: none;" class="fa fa-shopping-bag navbar-toggler text-white"> <span class="slcartmenusm" id="slcartmenumobile">0</span></i>
+                    </a>
+                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                        <div class="navbar-nav me-auto mb-2 mb-lg-0">
+                            <li class="nav-item"><a class="nav-link menulinkheader" href="index">Trang chủ</a></li>
+                            <li class="nav-item"><a class="nav-link menulinkheader" href="product">Sản phẩm</a></li>
+                            <li class="nav-item"><a class="nav-link menulinkheader" href="blog">Bài viết</a></li>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle menulinkheader" href="#" id="navbarDropdownDm" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    Danh mục
+                                </a>
+                                <ul class="dropdown-menu" aria-labelledby="navbarDropdownDm" id="categoryheader">
+                                    <li><a class="dropdown-item" href="accounts">Tài khoản</a></li>
+                                </ul>
+                            </li>
+                            <li class="nav-item"><a class="nav-link menulinkheader" href="instruction">Giới thiệu</a></li>
+                        </div>
+                        <div class="f-flex">
+                            <a sec:authorize="isAnonymous()" href="login" class="pointermenu">Đăng nhập</a>
+                            <li sec:authorize="isAuthenticated()" class="nav-item dropdown" style="list-style: none; margin-right: 15px;">
+                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="fa fa-user maincolor"></i>
+                                </a>
+                                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                    <li><a class="dropdown-item" href="accounts">Tài khoản</a></li>
+                                    <li><hr class="dropdown-divider"></li>
+                                    <li><a class="dropdown-item" href="/logout">Đăng xuất</a></li>
+                                </ul>
+                            </li>
+                        </div>
+                        <div class="f-flex">
+                            <a href="cart" class="pointermenu maincolor"><i class="fa fa-shopping-bag"><span class="slcartmenu" id="slcartmenu">0</span></i></a>
+                        </div>
+                        <div class="f-flex">
+                            <div class="divsearchheader">
+                                <form action="product" class="formsearchheader">
+                                    <input name="search" class="ipsearchheader" placeholder="TÌm kiếm">
+                                    <button class="btnsearchheader"><i class="fa fa-search"></i></button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+            </nav>
+        </div>
+    </div>
+</div>
+</body>
+</html>

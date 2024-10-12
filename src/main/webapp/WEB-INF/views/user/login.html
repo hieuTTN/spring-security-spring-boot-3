@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Đăng Nhập</title>
+    <head th:replace="common/libuser :: libheader"></head>
+    <link rel="stylesheet" type="text/css" href="/css/style.css">
+</head>
+<body>
+<div th:replace="common/headerUser :: headerUser"></div>
+<div class="contentmains">
+    <div class="contentlogin" style="background-image: url(image/back.jpg);background-repeat: no-repeat;background-size: 100%;display: flex; ">
+        <div class="cntlogin">
+            <div class="loginform col-lg-7 col-md-7 col-sm-12 col-12">
+                <p class="titellogin">Chào mừng bạn đến với SweeLee!</p>
+                <p class="plogintl"><span class="dangtl">ĐĂNG </span><span class="kytl">NHẬP</span></p>
+                <form method="post" class="inputloginform">
+                    <input name="username" id="username" placeholder="Email" class="inputform">
+                    <input name="password" required id="password" placeholder="Mật khẩu" class="inputform" type="password">
+                    <div th:if="${param.error}" class="errorlogin">
+                        Đăng nhập thất bại. Vui lòng kiểm tra lại thông tin đăng nhập.
+                    </div>
+                    <button type="submit" class="btndn">Đăng Nhập</button>
+                    <p class="linkquenmk"><a href="forgot" class="aquenmk">Quên mật khẩu</a></p>
+                    <p class="quenmk"><a href="index">
+                        ← Quay lại trang chủ – SweeLee
+                    </a></p>
+                    <p class="nothvaccount"><span>Bạn chưa có tài khoản? </span><a href="dang-ky" class="aquenmk">Đăng ký ngay</a></p>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
