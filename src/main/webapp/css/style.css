@@ -1574,6 +1574,9 @@
 .contentmains{
     padding-top: 100px;
 }
+.errorfield{
+    color: red;
+}
 @media screen and (min-width: 992px) {
     .col-lg-20p {
         width: 20%;

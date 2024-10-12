@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Tài Khoản</title>
+    <head th:replace="common/libadmin :: libheaderadmin"></head>
+    <link rel="stylesheet" type="text/css" href="/css/styleadmin.css">
+</head>
+<body>
+<!-- Include Header -->
+<div th:replace="common/navbarAdmin :: headerAdmin"></div>
+
+<!-- Include Side Navigation -->
+<div id="layoutSidenav">
+    <div th:replace="common/navbarAdmin :: sidenavAdmin"></div>
+    <div id="layoutSidenav_content">
+        <main class="main">
+            <div class="col-sm-12 header-sp">
+                <div class="row">
+                    <div class="col-md-3 col-sm-12">
+                        <a href="add-san-pham" class="btn btn-primary"><i class="fa fa-plus"></i> Thêm sản phẩm</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-12">
+                <div class="wrapper">
+                    <table id="example" class="table table-striped tablefix">
+                        <thead class="thead-tablefix">
+                            <tr>
+                                <th>id</th>
+                                <th>Ảnh</th>
+                                <th>Mã</th>
+                                <th>Danh mục</th>
+                                <th>Tên</th>
+                                <th>Giá</th>
+                                <th>Số lượng còn</th>
+                                <th class="sticky-col">Hành động</th>
+                            </tr>
+                        </thead>
+                        <tbody id="listcategory">
+                        <tr th:each="d : ${sanPhamList}">
+                            <td th:text="${d.id}"></td>
+                            <td><img th:src="${d.anh}"/></td>
+                            <td th:text="${d.maSp}"></td>
+                            <td th:text="${d.danhMuc.ten}"></td>
+                            <td th:text="${d.tenSp}"></td>
+                            <td th:text="${d.gia}"></td>
+                            <td th:text="${d.soLuong}"></td>
+                            <td class="sticky-col">
+                                <a onclick="return confirm('Bạn có chắc chắn muốn xóa sản phẩm này?');"  th:href="@{delete-sanpham(id=${d.id})}"><i class="fa fa-trash-alt iconaction"></i></a>
+                                <a th:href="@{add-san-pham(id=${d.id})}"><i class="fa fa-edit iconaction"></i></a>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+    </div>
+</div>
+</body>
+<script>
+    $('#example').DataTable();
+</script>
+<script>
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('delete-success') === 'true') {
+        swal({
+                title: "Thông báo",
+                text: "Xóa sản phẩm thành công!",
+                type: "success"
+            },
+            function() {
+                window.location.reload()
+            });
+    }
+</script>
+<script>
+    if (performance.navigation.type == performance.navigation.TYPE_RELOAD) {
+        window.location.href = 'san-pham'
+    }
+</script>
+</html>

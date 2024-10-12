@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Tài Khoản</title>
+  <head th:replace="common/libadmin :: libheaderadmin"></head>
+  <link rel="stylesheet" type="text/css" href="/css/styleadmin.css">
+  <script src="/js/adminproduct.js"></script>
+</head>
+<body>
+<!-- Include Header -->
+<div th:replace="common/navbarAdmin :: headerAdmin"></div>
+
+<!-- Include Side Navigation -->
+<div id="layoutSidenav">
+  <div th:replace="common/navbarAdmin :: sidenavAdmin"></div>
+  <div id="layoutSidenav_content">
+    <main class="main">
+      <div class="col-sm-12 header-sps">
+        <div class="title-add-admin">
+          <p>Thêm/ cập nhật sản phẩm</p>
+        </div>
+        <form method="post" action="add-san-pham" onsubmit="return beforeSubmit()" th:object="${sanPham}" class="col-sm-12" enctype="multipart/form-data">
+          <div class="form-add">
+            <div class="row">
+              <div class="col-md-4 col-sm-12 col-12">
+                <label class="lb-form">Mã sản phẩm</label>
+                <input th:field="*{maSp}" type="text" class="form-control">
+                <input th:field="*{id}" type="hidden" class="form-control">
+                <label class="lb-form">Tên sản phẩm</label>
+                <input th:field="*{tenSp}" type="text" class="form-control">
+                <label class="lb-form">Giá tiền</label>
+                <input th:field="*{gia}" type="text" class="form-control">
+                <label class="lb-form">Số lượng</label>
+                <input th:field="*{soLuong}" type="text" class="form-control">
+                <label class="lb-form">Danh mục sản phẩm</label>
+                <select id="danhMuc" th:field="*{danhMuc}" class="form-control">
+                  <option th:each="danhMuc : ${danhMucList}"
+                          th:value="${danhMuc.id}"
+                          th:text="${danhMuc.ten}"></option>
+                </select>
+                <br>
+                <div class="loading" id="loading">
+                  <div class="bar1 bar"></div>
+                </div><br>
+                <button class="btn btn-primary form-control">Thêm/ cập nhật</button>
+              </div>
+              <div class="col-md-8 col-sm-12 col-12">
+                <label class="lb-form">Ảnh nền</label>
+                <input id="imgbanner" name="imgbanner" type="file" class="form-control">
+                <img th:src="${sanPham.anh}" id="imgpreproduct" style="width: 70px;margin-top: 5px;display: block;">
+                <label class="lb-form">Ảnh phụ</label>
+                <input name="listfile" id="choosefile" multiple type="file" style="visibility: hidden;">
+                <div class="row">
+                  <div class="col-md-12">
+                    <div class="row">
+                      <div class="col-md-3" id="chon-anhs" style="height: 100px;">
+                        <div style="height: 120px;" id="choose-image" class="choose-image" onclick="document.getElementById('choosefile').click(); return false;">
+                          <p><i class="fas fa-camera" id="camera"></i></p>
+                          <p id="numimage">Chọn ảnh phụ cho sản phẩm</p>
+                        </div>
+                      </div>
+                      <div id="preview" class="row" style="margin-top: 30px">
+
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row" id="anhdathem"  th:if="${type == 'update'}">
+                    <div class="col-sm-12">
+                      <h4 style="margin-top: 30px;">Ảnh đã thêm</h4>
+                    </div>
+                    <div id="listanhdathem" class="row">
+                      <div th:id="'imgdathem' + ${anh.id}" class="col-md-4" th:each="anh : ${sanPham.anhSanPhams}">
+                         <img style="width: 100%; height: 120px; object-fit: cover" th:src="${anh.linkAnh}" class="image-upload">
+                         <button th:attr="onclick=|deleteProductImage('${anh.id}')|" type="button" class="btn btn-danger form-control">Xóa ảnh</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <label class="lb-form">Mô tả sản phẩm</label>
+                <textarea id="editor" th:field="*{moTa}"></textarea>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </main>
+  </div>
+</div>
+</body>
+<script src="https://cdn.tiny.cloud/1/f6s0gxhkpepxkws8jawvfwtj0l9lv0xjgq1swbv4lgcy3au3/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
+<script>
+  tinymce.init({
+    selector: 'textarea#editor',
+  });
+  const urlParams = new URLSearchParams(window.location.search);
+  if (urlParams.get('add-success') === 'true') {
+    swal({
+        title: "Thông báo",
+        text: "Thêm/ cập nhật thành công!",
+        type: "success"
+      },
+      function() {
+        window.location.href = 'san-pham'
+      });
+  }
+  window.onload = function (){
+    loadInit();
+  }
+  function beforeSubmit() {
+    document.getElementById("loading").style.display = 'block'
+    return true;
+  }
+
+  async function deleteProductImage(id) {
+    var con = confirm("Bạn muốn xóa ảnh này?");
+    if (con == false) {
+      return;
+    }
+    const response = await fetch('/admin/delete-anh-san-pham?id=' + id, {
+      method: 'DELETE'
+    });
+    if (response.status < 300) {
+      swal({
+        title: "Thông báo",
+        text: "xóa ảnh thành công!",
+        type: "success"
+      },
+      function() {
+        document.getElementById("imgdathem" + id).remove();
+      });
+    }
+    if (response.status == exceptionCode) {
+      var result = await response.json()
+      toastr.warning(result.defaultMessage);
+    }
+  }
+
+</script>
+</html>

@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.sql.Timestamp;
+import java.util.List;
 
 @Entity
 @Table(name = "san_pham")
@@ -33,4 +34,6 @@ public class SanPham {
     @JoinColumn(name = "danh_muc_id")
     private DanhMuc danhMuc;
 
+    @OneToMany(mappedBy = "sanPham", cascade = CascadeType.REMOVE)
+    private List<AnhSanPham> anhSanPhams;
 }

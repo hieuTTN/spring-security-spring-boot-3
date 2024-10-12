@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Danh Mục</title>
+  <head th:replace="common/libadmin :: libheaderadmin"></head>
+  <link rel="stylesheet" type="text/css" href="/css/styleadmin.css">
+</head>
+<body>
+<!-- Include Header -->
+<div th:replace="common/navbarAdmin :: headerAdmin"></div>
+
+<!-- Include Side Navigation -->
+<div id="layoutSidenav">
+  <div th:replace="common/navbarAdmin :: sidenavAdmin"></div>
+  <div id="layoutSidenav_content">
+    <main class="main">
+      <div class="col-sm-12 header-sp">
+        <div class="row">
+          <div class="col-md-3">
+            <a onclick="clearInput()" data-bs-toggle="modal" data-bs-target="#themdanhmuc" class="btn btn-success"><i class="fa fa-plus"></i> Thêm danh mục</a>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-12">
+        <div class="wrapper">
+          <table id="example" class="table table-striped tablefix">
+            <thead class="thead-tablefix">
+            <tr>
+              <th>id</th>
+              <th>Tên danh mục</th>
+              <th>Số lượng sản phẩm</th>
+              <th class="sticky-col">Hành động</th>
+            </tr>
+            </thead>
+            <tbody id="listcategory">
+              <tr th:each="d : ${danhMucList}">
+                <td th:text="${d.id}"></td>
+                <td th:text="${d.ten}"></td>
+                <td th:text="${d.quantity}"></td>
+                <td class="sticky-col">
+                  <a  onclick="return confirm('Bạn có chắc chắn muốn xóa danh mục này?');"  th:href="@{delete-category(id=${d.id})}"><i class="fa fa-trash-alt iconaction"></i></a>
+                  <i th:attr="onclick=|openEditModal('${d.id}', '${d.ten}')|"  data-bs-toggle="modal" data-bs-target="#themdanhmuc" class="fa fa-edit iconaction"></i>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
+</body>
+<div class="modal fade" id="themdanhmuc" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="false">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header"><h5 class="modal-title" id="exampleModalLabel">Thêm/ cập nhật danh mục</h5> <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button></div>
+      <div class="modal-body">
+        <form method="post" th:object="${danhMuc}" class="col-sm-5" style="margin: auto;">
+          <input id="idcate" name="id" type="hidden">
+          <label>Tên danh mục</label>
+          <input id="catename" name="ten" type="text" class="form-control">
+          <br>
+          <button class="btn btn-success form-control action-btn">Thêm/ Cập nhật danh mục</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  $('#example').DataTable();
+</script>
+<script>
+  const urlParams = new URLSearchParams(window.location.search);
+  if (urlParams.get('add-success') === 'true') {
+    swal({
+      title: "Thông báo",
+      text: "thêm/sửa danh mục thành công!",
+      type: "success"
+    },
+    function() {
+      window.location.reload()
+    });
+  }
+  if (urlParams.get('delete-success') === 'true') {
+    swal({
+      title: "Thông báo",
+      text: "Xóa danh mục thành công!",
+      type: "success"
+    },
+    function() {
+      window.location.reload()
+    });
+  }
+</script>
+<script>
+  function clearInput(){
+    document.getElementById("idcate").value = ''
+    document.getElementById("catename").value = ''
+  }
+  function openEditModal(id, name) {
+    document.getElementById('idcate').value = id;
+    document.getElementById('catename').value = name;
+
+  }
+  if (performance.navigation.type == performance.navigation.TYPE_RELOAD) {
+      window.location.href = 'danh-muc'
+  }
+</script>
+</html>

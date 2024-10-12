@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+</head>
+<body>
+<nav th:fragment="headerAdmin" id="top" class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
+    <a class="navbar-brand ps-3" href="index">Quản trị hệ thống</a>
+    <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i class="fas fa-bars"></i></button>
+    <form class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0"></form>
+    <ul id="menuleft" class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
+    </ul>
+</nav>
+
+<div th:fragment="sidenavAdmin" id="layoutSidenav_nav">
+    <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
+        <div class="sb-sidenav-menu">
+            <div class="nav">
+                <a class="nav-link" href="san-pham">
+                    <div class="sb-nav-link-icon"><i class="fa fa-database iconmenu"></i></div>
+                    Sản phẩm
+                </a>
+                <a class="nav-link" href="tai-khoan">
+                    <div class="sb-nav-link-icon"><i class="fas fa-user-alt iconmenu"></i></div>
+                    Tài khoản
+                </a>
+                <a class="nav-link" href="danh-muc">
+                    <div class="sb-nav-link-icon"><i class="fas fa-table iconmenu"></i></div>
+                    Danh mục
+                </a>
+                <!-- Thêm các menu khác ở đây -->
+                <a class="nav-link" href="/logout">
+                    <div class="sb-nav-link-icon"><i class="fas fa-sign-out-alt iconmenu"></i></div>
+                    Đăng xuất
+                </a>
+            </div>
+        </div>
+    </nav>
+</div>
+</body>
+</html>

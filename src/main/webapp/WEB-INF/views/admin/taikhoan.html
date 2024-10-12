@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Tài Khoản</title>
+  <head th:replace="common/libadmin :: libheaderadmin"></head>
+  <link rel="stylesheet" type="text/css" href="/css/styleadmin.css">
+</head>
+<body>
+<!-- Include Header -->
+<div th:replace="common/navbarAdmin :: headerAdmin"></div>
+
+<!-- Include Side Navigation -->
+<div id="layoutSidenav">
+  <div th:replace="common/navbarAdmin :: sidenavAdmin"></div>
+  <div id="layoutSidenav_content">
+    <main class="main">
+      <div class="col-sm-12 header-sp">
+        <div class="row">
+          <div class="col-md-3 col-sm-6 col-6">
+            <label class="lb-form">Chọn quyền</label>
+              <select onchange="loadUserByRole()" id="role" class="form-control">
+                <option value="">Tất cả quyền</option>
+                <option value="ROLE_USER" >Tài khoản người dùng</option>
+                <option value="ROLE_ADMIN">Tài khoản admin</option>
+              </select>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-12">
+        <div class="wrapper">
+          <table id="example" class="table table-striped tablefix">
+            <thead class="thead-tablefix">
+            <tr>
+              <th>id</th>
+              <th>Email</th>
+              <th>Họ tên</th>
+              <th>Quyền</th>
+              <th class="sticky-col">Hành động</th>
+            </tr>
+            </thead>
+            <tbody id="listcategory">
+            <tr th:each="d : ${taiKhoanList}">
+              <td th:text="${d.id}"></td>
+              <td th:text="${d.email}"></td>
+              <td th:text="${d.fullName}"></td>
+              <td th:text="${d.role}"></td>
+              <td class="sticky-col">
+                <a onclick="return confirm('Bạn có chắc chắn muốn xóa tài khoản này?');"  th:href="@{delete-user(id=${d.id})}"><i class="fa fa-trash-alt iconaction"></i></a>
+                <i  th:attr="onclick=|openEditModal('${d.id}', '${d.role}')|" data-bs-toggle="modal" data-bs-target="#addtk" class="fa fa-edit iconaction"></i>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
+</body>
+<div class="modal fade" id="addtk" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="false">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header"><h5 class="modal-title" id="exampleModalLabel">Thêm/ cập nhật danh mục</h5> <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button></div>
+      <div class="modal-body">
+        <form action="update-role" method="post" class="col-sm-5" style="margin: auto;">
+          <input id="idUser" name="idUser" type="hidden">
+          <label>Quyền</label>
+          <select id="quyenupdate" name="role" type="text" class="form-control">
+            <option value="ROLE_USER" >Tài khoản người dùng</option>
+            <option value="ROLE_ADMIN">Tài khoản admin</option>
+          </select>
+          <br>
+          <button class="btn btn-success form-control action-btn">Thêm/ Cập nhật danh mục</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  $('#example').DataTable();
+</script>
+<script>
+  const urlParams = new URLSearchParams(window.location.search);
+  if (urlParams.get('update-role-success') === 'true') {
+    swal({
+              title: "Thông báo",
+              text: "Cập nhật quyền thành công!",
+              type: "success"
+            },
+            function() {
+            });
+  }
+  if (urlParams.get('delete-success') === 'true') {
+    swal({
+              title: "Thông báo",
+              text: "Xóa tài khoản thành công!",
+              type: "success"
+            },
+            function() {
+              window.location.reload()
+            });
+  }
+</script>
+<script>
+  function openEditModal(id, role) {
+    document.getElementById('idUser').value = id;
+    document.getElementById('quyenupdate').value = role;
+
+  }
+  if (performance.navigation.type == performance.navigation.TYPE_RELOAD) {
+    window.location.href = 'tai-khoan'
+  }
+
+  function loadUserByRole(){
+    var role = document.getElementById("role").value;
+    var url = 'tai-khoan'
+    if(role != ""){
+      url = 'tai-khoan?role='+role
+    }
+    window.location.href = url;
+  }
+
+  $(document).ready(function() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const role = urlParams.get('role');
+    if (role) {
+      $('#role').val(role);
+    }
+  });
+</script>
+</html>

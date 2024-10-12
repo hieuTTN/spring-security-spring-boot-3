@@ -13,11 +13,11 @@
     <div class="cntlogin">
       <div class="loginform col-lg-7 col-md-7 col-sm-12 col-12">
         <p class="plogintl"><span class="dangtl">ĐĂNG </span><span class="kytl">KÝ</span></p>
-        <form class="inputloginform" action="javascript:regis()">
-          <input id="fullname" placeholder="Họ tên" class="inputform">
-          <input id="phone" placeholder="Số điện thoại" class="inputform">
-          <input id="email" placeholder="Địa chỉ email" class="inputform" type="email" required>
-          <input id="password" placeholder="Mật khẩu" class="inputform" type="password" required>
+        <form class="inputloginform" method="post" th:object="${user}">
+          <input name="fullName" placeholder="Họ tên" class="inputform">
+          <input name="email" placeholder="Địa chỉ email" class="inputform" type="email" required>
+          <span th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="errorfield"></span>
+          <input name="password" placeholder="Mật khẩu" class="inputform" type="password" required>
           <button class="btndn">Đăng Ký</button>
           <p class="quenmk"><a href="index">
             ← Quay lại trang chủ – SweeLee
@@ -29,4 +29,10 @@
   </div>
 </div>
 </body>
+<script>
+  const urlParams = new URLSearchParams(window.location.search);
+  if (urlParams.get('success') === 'true') {
+    toastr.success("Đăng ký thành công")
+  }
+</script>
 </html>
