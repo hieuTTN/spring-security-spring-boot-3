@@ -37,7 +37,9 @@
                                     Danh mục
                                 </a>
                                 <ul class="dropdown-menu" aria-labelledby="navbarDropdownDm" id="categoryheader">
-                                    <li><a class="dropdown-item" href="accounts">Tài khoản</a></li>
+                                    <li th:each="danhMuc : ${danhMucListGlobal}">
+                                        <a th:text="${danhMuc.ten}" class="dropdown-item" href="accounts"></a>
+                                    </li>
                                 </ul>
                             </li>
                             <li class="nav-item"><a class="nav-link menulinkheader" href="instruction">Giới thiệu</a></li>
@@ -56,7 +58,7 @@
                             </li>
                         </div>
                         <div class="f-flex">
-                            <a href="cart" class="pointermenu maincolor"><i class="fa fa-shopping-bag"><span class="slcartmenu" id="slcartmenu">0</span></i></a>
+                            <a href="gio-hang" class="pointermenu maincolor"><i class="fa fa-shopping-bag"><span class="slcartmenu" id="slcartmenu" th:text="${soLuongGhGlobal}"></span></i></a>
                         </div>
                         <div class="f-flex">
                             <div class="divsearchheader">

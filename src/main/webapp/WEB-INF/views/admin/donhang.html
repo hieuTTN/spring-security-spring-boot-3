@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Đơn Hàng</title>
+  <head th:replace="common/libadmin :: libheaderadmin"></head>
+  <link rel="stylesheet" type="text/css" href="/css/styleadmin.css">
+</head>
+<body>
+<!-- Include Header -->
+<div th:replace="common/navbarAdmin :: headerAdmin"></div>
+
+<!-- Include Side Navigation -->
+<div id="layoutSidenav">
+  <div th:replace="common/navbarAdmin :: sidenavAdmin"></div>
+  <div id="layoutSidenav_content">
+    <main class="main">
+      <div class="col-sm-12 header-sp">
+        <div class="row">
+          <div class="col-md-2">
+            <label>Từ ngày</label>
+            <input id="start" type="date" class="form-control">
+          </div>
+          <div class="col-md-2">
+            <label>Đến ngày</label>
+            <input id="end" type="date" class="form-control">
+          </div>
+          <div class="col-md-3">
+            <label>Trạng thái đơn hàng</label>
+            <select class="form-control" id="trangthai">
+              <option value="">Tất cả đơn hàng</option>
+              <option th:each="status : ${trangThaiList}" th:value="${status}" th:text="${status}"></option>
+            </select>
+          </div>
+          <div class="col-md-2">
+            <br>
+            <button onclick="loadInvoice()" class="btn btn-danger form-control"><i class="fa fa-filter"></i> Lọc</button>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-12">
+        <div class="wrapper">
+          <table id="example" class="table table-striped tablefix">
+            <thead class="thead-tablefix">
+            <tr>
+              <th>Mã đơn hàng</th>
+              <th class="floatr">Ngày đặt</th>
+              <th>Địa chỉ</th>
+              <th class="floatr">Giá trị<br>đơn hàng</th>
+              <th class="floatr">Trạng thái vận chuyển</th>
+              <th class="sticky-col">Hành động</th>
+            </tr>
+            </thead>
+            <tbody id="listcategory">
+            <tr th:each="d : ${donHangList}">
+              <td th:text="${d.id}"></td>
+              <td th:text="${d.ngayTao}"></td>
+              <td th:text="${d.diaChi}"></td>
+              <td class="giaspformat" th:text="${d.tongTien}"></td>
+              <td th:text="${d.trangThai}"></td>
+              <td class="sticky-col">
+                <a onclick="return confirm('Bạn có chắc chắn muốn xóa đơn hàng này?');"  th:href="@{delete-don-hang(id=${d.id})}"><i class="fa fa-trash-alt iconaction"></i></a>
+                <i th:attr="onclick=|openEditModal('${d.id}', '${d.trangThai}')|" data-bs-toggle="modal" data-bs-target="#capnhatdonhang" class="fa fa-edit iconaction"></i><br>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
+<script>
+  function openEditModal(id, name) {
+    document.getElementById('iddonhangupdate').value = id;
+    document.getElementById('trangthaiupdate').value = name;
+  }
+</script>
+<div class="modal fade" id="capnhatdonhang" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Cập nhật trạng thái đơn hàng</h5> <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button></div>
+      <div class="modal-body">
+        <form method="post" action="cap-nhat-trang-thai">
+          <input type="hidden" id="iddonhangupdate" name="iddonhangupdate">
+          <select class="form-control" id="trangthaiupdate" name="trangthaiupdate">
+            <option th:each="status : ${trangThaiList}" th:value="${status}" th:text="${status}"></option>
+          </select><br><br>
+          <button class="btn btn-primary form-control action-btn">Cập nhật</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+<script>
+  $('#example').DataTable();
+</script>
+<script th:inline="javascript">
+  var message = [[${message}]];
+  if (message != null){
+    swal({
+      title: "Thông báo",
+      text: message,
+      type: "success"
+    },
+    function() {
+    });
+  }
+</script>
+<script src="/js/price.js"></script>
+</html>

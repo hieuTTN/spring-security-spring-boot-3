@@ -6,7 +6,7 @@ import lombok.Setter;
 
 
 @Entity
-@Table(name = "invoice_detail")
+@Table(name = "chi_tiet_don_hang")
 @Getter
 @Setter
 public class ChiTietDonHang {

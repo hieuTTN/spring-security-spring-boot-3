@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Đặt hàng</title>
+  <head th:replace="common/libuser :: libheader"></head>
+  <link rel="stylesheet" type="text/css" href="/css/style.css">
+</head>
+<body>
+<div th:replace="common/headerUser :: headerUser"></div>
+<div class="contentmain">
+  <div class="container">
+    <div class="marque">
+      <marquee>Chúng tôi cung cấp các loại dụng cụ chơi nhạc chất lượng cao, nguồn gốc rõ ràng</marquee>
+    </div>
+    <div class="row">
+      <div class="col-lg-7 col-md-7 col-sm-12">
+        <div class="blocktitle" style="margin-top: 0px;">Đặt hàng</div>
+        <div class="listcart">
+          <span class="cartname">Tổng</span>
+          <span class="slcarts">(<span id="slcart">1</span>) Sản phẩm</span>
+
+          <div class="cartres">
+            <table class="table tablecart">
+              <tr>
+                <th>Sản phẩm</th>
+                <th>Đơn giá</th>
+                <th style="text-align: center;width: 150px;">Số lượng</th>
+                <th style="width: 100px;">Tổng tiền</th>
+              </tr>
+              <tbody id="listcartDes">
+                  <tr>
+                    <td><span th:text="${sanPham.tenSp}"></span></td>
+                    <td><span th:text="${sanPham.gia}" class="giaspformat"></span></td>
+                    <td>
+                      <div class="addcartdetail">
+                        <button onclick="upAndDownDetail(-1)" class="cartbtn"> - </button>
+                        <input name="soluong" form="formthanhtoan" id="inputslcart" class="inputslcart" value="1">
+                        <button onclick="upAndDownDetail(1)" class="cartbtn"> + </button></div>
+                    </td>
+                    <td id="tongtientd"><span th:text="${sanPham.gia}" class="giaspformat"></span></td>
+                  </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </div>
+      <div id="maincategory" class="col-lg-5 col-md-5 col-sm-12">
+        <form method="post" action="/dat-hang-khong-dang-nhap" id="formthanhtoan">
+          <span class="titlecheckout">Thông tin giao hàng</span>
+          <input name="id" type="hidden" th:value="${param.id}">
+          <input name="fullName" class="form-control fomd" placeholder="Họ tên">
+          <input name="phone" class="form-control fomd" placeholder="Số điện thoại">
+          <input name="address" class="form-control fomd" placeholder="Địa chỉ">
+          <textarea name="ghichudonhang" class="form-control fomd" placeholder="ghi chú"></textarea>
+          <br/>
+          <button class="btn btn-primary form-control">Thanh toán</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div th:replace="common/footeruser :: footerUser"></div>
+</body>
+<script  th:inline="javascript">
+  function upAndDownDetail(quantity){
+    var giaTien = [[${sanPham.gia}]];
+    var sl = document.getElementById("inputslcart").value;
+    sl = Number(sl) + quantity;
+    if(sl == 0){
+      toastr.warning("Số lượng không được < 1");
+      return;
+    }
+    document.getElementById("inputslcart").value = sl;
+    document.getElementById("tongtientd").innerHTML = formatmoney(giaTien * sl);
+  }
+
+</script>
+<script>
+  const urlParams = new URLSearchParams(window.location.search);
+  if (urlParams.get('dat-hang-thanh-cong') === 'true') {
+    swal({
+      title: "Thông báo",
+      text: "Đặt hàng thành công!",
+      type: "success"
+    },
+    function() {
+      window.location.href = '/'
+    });
+  }
+</script>
+<script src="js/price.js"></script>
+
+</html>

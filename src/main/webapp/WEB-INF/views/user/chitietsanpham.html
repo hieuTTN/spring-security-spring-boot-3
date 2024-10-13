@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+  <meta charset="UTF-8">
+  <title>Trang Chủ</title>
+  <head th:replace="common/libuser :: libheader"></head>
+  <link rel="stylesheet" type="text/css" href="/css/style.css">
+</head>
+<body>
+<div th:replace="common/headerUser :: headerUser"></div>
+<div class="contentmain">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-9 col-md-9 col-sm-9">
+        <div class="row">
+          <div class="col-lg-5 col-md-5 col-sm-12 col-12">
+            <img id="imgdetailpro" th:src="${sanPham.anh}" class="imgdetailpro">
+            <div class="listimgdetail row" id="listimgdetail">
+              <div th:each="anh : ${sanPham.anhSanPhams}" class="col-lg-20p col-md-3 col-sm-4 col-4 singdimg">
+                <img onclick="clickImgdetail(this)" th:src="${anh.linkAnh}" class="imgldetail imgactive">
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-7 col-md-7 col-sm-12 col-12">
+            <span class="detailnamepro" id="detailnamepro" th:text="${sanPham.tenSp}">name</span>
+            <div class="blockdetailpro">
+              <span class="codepro" id="codepro" th:text="${sanPham.maSp}">STM6099-DEN</span>
+            </div>
+            <div id="descriptiondetail" th:utext="${sanPham.moTa}">
+            </div>
+          </div>
+        </div>
+      </div>
+      <div id="maincategory" class="col-lg-3 col-md-3 col-sm-3">
+        <div class="divgiohangdetailsp">
+          <p class="pricedetail giaspformat" id="pricedetail" th:text="${sanPham.gia}"></p>
+          <form id="form-add-cart" method="post" action="add-gio-hang" class="addcartdetail" sec:authorize="isAuthenticated()">
+            <input type="hidden" name="id" th:value="${param.id}">
+            <button type="button" onclick="upAndDownDetail(-1)" class="cartbtn"> - </button>
+            <input name="soLuong" id="inputslcart" class="inputslcart" value="1">
+            <button type="button" onclick="upAndDownDetail(1)" class="cartbtn"> + </button></form>
+          <div class="btndetail">
+            <button form="form-add-cart" sec:authorize="isAuthenticated()" class="btnaddcartdetailsp"><i class="fa fa-shopping-cart"></i> Thêm giỏ hàng</button>
+            <a href="/login" sec:authorize="isAnonymous()" class="pointer"><i class="fa fa-shopping-cart"></i> Đăng nhập để thêm giỏ hàng</a>
+            <hr>
+            <a target="_blank" th:href="@{muangay(id=${param.id})}" class="btn btn-primary form-control"><i class="fa fa-shopping-cart"></i> Mua ngay</a>
+            <span><i class="fa fa"></i></span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div th:replace="common/footeruser :: footerUser"></div>
+</body>
+<script src="js/price.js"></script>
+<script>
+  function upAndDownDetail(quantity){
+    var sl = document.getElementById("inputslcart").value;
+    sl = Number(sl) + quantity;
+    if(sl == 0){
+      toastr.warning("Số lượng không được < 1");
+      return;
+    }
+    document.getElementById("inputslcart").value = sl;
+  }
+</script>
+<script th:inline="javascript">
+  var message = [[${message}]];
+  if (message != null){
+    swal({
+      title: "Thông báo",
+      text: message,
+      type: "success"
+    },
+    function() {
+    });
+  }
+</script>
+</html>

@@ -40,7 +40,7 @@
                         <tbody id="listcategory">
                         <tr th:each="d : ${sanPhamList}">
                             <td th:text="${d.id}"></td>
-                            <td><img th:src="${d.anh}"/></td>
+                            <td><img th:src="${d.anh}" class="imgtable"/></td>
                             <td th:text="${d.maSp}"></td>
                             <td th:text="${d.danhMuc.ten}"></td>
                             <td th:text="${d.tenSp}"></td>

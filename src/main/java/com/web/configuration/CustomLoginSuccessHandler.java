@@ -33,7 +33,7 @@ public class CustomLoginSuccessHandler implements AuthenticationSuccessHandler {
             response.sendRedirect("/");
         }
         if(user.get().getRole().equals(Role.ROLE_ADMIN)){
-            response.sendRedirect("/admin/index");
+            response.sendRedirect("/admin/san-pham");
         }
     }
 }

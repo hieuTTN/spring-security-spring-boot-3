@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Trang Chủ</title>
+  <head th:replace="common/libuser :: libheader"></head>
+  <link rel="stylesheet" type="text/css" href="/css/style.css">
+</head>
+<body>
+<div th:replace="common/headerUser :: headerUser"></div>
+<div class="contentmain">
+  <div class="container">
+    <div class="marque">
+      <marquee>Chúng tôi cung cấp các loại dụng cụ chơi nhạc chất lượng cao, nguồn gốc rõ ràng</marquee>
+    </div>
+    <div class="row">
+      <div class="col-lg-9 col-md-9 col-sm-9">
+        <div class="blocktitle" style="margin-top: 0px;">Giỏ hàng</div>
+        <div class="listcart">
+          <span class="cartname">GIỎ HÀNG</span>
+          <span class="slcarts">(<span id="slcart" th:text="${gioHangList.size()}"></span>) Sản phẩm</span>
+
+          <div class="cartres">
+            <table class="table tablecart">
+              <tr>
+                <th>Sản phẩm</th>
+                <th>Đơn giá</th>
+                <th style="text-align: center;width: 150px;">Số lượng</th>
+                <th style="width: 100px;">Tổng tiền</th>
+                <th style="width: 100px;">Xóa</th>
+              </tr>
+              <tbody id="listcartDes">
+                  <tr th:each="d : ${gioHangList}">
+                    <td th:text="${d.sanPham.tenSp}"></td>
+                    <td class="giaspformat" th:text="${d.sanPham.gia}"></td>
+                    <td>
+                      <div class="addcartdetail">
+                        <form method="post" action="update-sl"><input value="-1" type="hidden" name="soLuong"><input name="id" th:value="${d.id}" type="hidden"><button class="cartbtn"> - </button></form>
+                        <input name="soluong" id="inputslcart" th:value="${d.soLuong}" class="inputslcart" value="1">
+                        <form method="post" action="update-sl"><input value="1" type="hidden" name="soLuong"><input name="id" th:value="${d.id}" type="hidden"><button class="cartbtn"> + </button></form>
+                      </div>
+                    </td>
+                    <td class="giaspformat" th:text="${d.soLuong * d.sanPham.gia}"></td>
+                    <td><a onclick="return confirm('Xóa sản phẩm khỏi giỏ hàng?');"  th:href="@{delete-giohang(id=${d.id})}"><i class="fa fa-trash"></i></a></td>
+                  </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </div>
+      <div id="maincategory" class="col-lg-3 col-md-3 col-sm-3">
+        <div class="ttcart">
+          <div class="tongdon">
+            <span class="tds">Tổng đơn: </span><span class="giaspformat tonggiatien" id="tonggiatien" th:text="${tongTien}"></span>
+            <button onclick="location.href='checkout'" class="btnthanhtoan">Thanh toán</button>
+          </div>
+          <p class="freeship">MIỄN PHÍ VẬN CHUYỂN VỚI ĐƠN HÀNG TỪ 498K</p>
+          <p>Mọi đơn hàng trên hệ thống sẽ được giảm giá phí vận chuyển chỉ còn <span class="buypl">20.000 VND</span></p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div th:replace="common/footeruser :: footerUser"></div>
+</body>
+<script src="js/price.js"></script>
+<script th:inline="javascript">
+  var message = [[${message}]];
+  if (message != null){
+    swal({
+      title: "Thông báo",
+      text: message,
+      type: "success"
+    },
+    function() {
+    });
+  }
+</script>
+</html>

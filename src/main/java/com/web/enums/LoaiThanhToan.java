@@ -7,5 +7,5 @@ import lombok.Getter;
 @Getter
 public enum LoaiThanhToan {
 
-    DAT_HANG, TAI_QUAY
+    DAT_HANG_DANG_NHAP, DAT_HANG_KHONG_DANG_NHAP, TAI_QUAY
 }
